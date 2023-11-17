@@ -1,24 +1,22 @@
 import { Meteor } from 'meteor/meteor';
-import { LoginGithubForm } from './LoginGithubForm';
-import { LoginGoogleForm } from './LoginGoogleForm';
+import { Accounts } from 'meteor/accounts-base';
 import React, { useState } from 'react';
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const submit = e => {
         e.preventDefault();
-
-        Meteor.loginWithPassword(username, password);
-    };
+        Accounts.createUser({ username, email, password });
+    }
 
     return (
-        <form onSubmit={submit} className="login-form">
-            <LoginGithubForm />
-            <LoginGoogleForm />
+        <form onSubmit={submit} className="register-form">
             <div>
                 <label htmlFor="username">Username</label>
+
                 <input
                     type="text"
                     placeholder="Username"
@@ -26,9 +24,17 @@ export const LoginForm = () => {
                     required
                     onChange={(e) => setUsername(e.target.value)}
                 />
-            </div>
 
-            <div>
+                <label htmlFor="email">Email</label>
+
+                <input
+                    type="email"
+                    placeholder="Email"
+                    name="email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+
                 <label htmlFor="password">Password</label>
 
                 <input
@@ -38,10 +44,7 @@ export const LoginForm = () => {
                     required
                     onChange={(e) => setPassword(e.target.value)}
                 />
-            </div>
 
-            <div>
-                <button type="submit">Log In</button>
             </div>
         </form>
     );
